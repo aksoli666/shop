@@ -1,23 +1,20 @@
 package shop.repository.impl;
 
-import jakarta.persistence.EntityExistsException;
+import java.util.Collections;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import shop.entity.Book;
+import shop.exception.DataProcessingException;
 import shop.repository.BookRepository;
 
 @Repository
+@RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepository {
     private final SessionFactory sessionFactory;
-
-    @Autowired
-    public BookRepositoryImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     @Override
     public Book save(Book book) {
@@ -32,8 +29,7 @@ public class BookRepositoryImpl implements BookRepository {
             if (transaction != null) {
                 transaction.rollback();
             }
-            throw new EntityExistsException("Book already exists or something is wrong. "
-                    + "Entity: " + book, e);
+            throw new DataProcessingException("Can`t save book: " + book, e);
         } finally {
             if (session != null) {
                 session.close();
@@ -44,10 +40,12 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public List<Book> findAll() {
+        List<Book> books = Collections.emptyList();
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("SELECT b FROM Book b", Book.class).getResultList();
+            books = session.createQuery("FROM Book", Book.class).getResultList();
+            return books;
         } catch (Exception e) {
-            throw new RuntimeException("Error finding all books", e);
+            throw new DataProcessingException("Fetching " + books + " failed", e);
         }
     }
 }
