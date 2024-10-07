@@ -2,6 +2,7 @@ package shop.repository.impl;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,7 +18,7 @@ public class BookRepositoryImpl implements BookRepository {
     private final SessionFactory sessionFactory;
 
     @Override
-    public Book save(Book book) {
+    public Book createBook(Book book) {
         Session session = null;
         Transaction transaction = null;
         try {
@@ -39,7 +40,16 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public List<Book> findAll() {
+    public Optional<Book> findBookById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return Optional.ofNullable(session.get(Book.class, id));
+        } catch (Exception e) {
+            throw new DataProcessingException("Can`t find book by id: " + id, e);
+        }
+    }
+
+    @Override
+    public List<Book> findAllBooks() {
         List<Book> books = Collections.emptyList();
         try (Session session = sessionFactory.openSession()) {
             books = session.createQuery("FROM Book", Book.class).getResultList();

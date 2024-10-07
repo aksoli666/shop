@@ -31,4 +31,16 @@ public class Book {
     private BigDecimal price;
     private String description;
     private String coverImage;
+
+    @Override
+    public String toString() {
+        return "Book{"
+                + "id=" + id
+                + ", title='" + title
+                + ", author='" + author
+                + ", isbn='" + isbn
+                + ", price=" + price
+                + ", description='" + description
+                + ", coverImage='" + coverImage + '}';
+    }
 }
