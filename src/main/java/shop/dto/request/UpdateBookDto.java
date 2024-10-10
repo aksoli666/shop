@@ -1,13 +1,12 @@
-package shop.dto.responce;
+package shop.dto.request;
 
 import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
-public class BookDto {
-    private Long id;
+@Setter
+public class UpdateBookDto {
     private String title;
     private String author;
     private String isbn;
