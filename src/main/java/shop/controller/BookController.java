@@ -3,13 +3,16 @@ package shop.controller;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shop.dto.request.CreateBookDto;
+import shop.dto.request.UpdateBookDto;
 import shop.dto.responce.BookDto;
 import shop.service.BookService;
 
@@ -32,5 +35,15 @@ public class BookController {
     @GetMapping
     public List<BookDto> getAllBooks() {
         return bookService.getAllBooks();
+    }
+
+    @PutMapping("/{id}")
+    public BookDto updateBook(@PathVariable Long id, @RequestBody UpdateBookDto updateBookDto) {
+        return bookService.updateBookById(id, updateBookDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteBookById(@PathVariable Long id) {
+        return bookService.deleteBookById(id);
     }
 }
