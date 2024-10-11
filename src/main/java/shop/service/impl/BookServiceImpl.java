@@ -27,11 +27,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto getBookById(Long id) {
-        Book bookFromRepository = bookRepository.findById(id)
-                .orElseThrow(
-                        () -> new EntityNotFoundException("Can`t get book by id: " + id)
-                );
-        return bookMapper.toBookDto(bookFromRepository);
+        return bookMapper.toBookDto(bookRepository.findById(id).get());
     }
 
     @Override
@@ -41,21 +37,17 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto updateBookById(Long id, UpdateBookDto updateBookDto) {
-        if (bookRepository.updateBookById(id,
-                updateBookDto.getTitle(),
-                updateBookDto.getAuthor(),
-                updateBookDto.getIsbn(),
-                updateBookDto.getPrice(),
-                updateBookDto.getDescription(),
-                updateBookDto.getCoverImage()) > -1) {
-            return getBookById(id);
-        }
-        throw new EntityNotFoundException("Can`t update book by id: " + id);
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found. Id: " + id));
+        return bookMapper.toBookDto(
+                bookRepository.save(
+                        bookMapper.updateBookFromDto(updateBookDto, book)
+                )
+        );
     }
 
     @Override
-    public String deleteBookById(Long id) {
+    public void deleteBookById(Long id) {
         bookRepository.deleteById(id);
-        return "Book deleted";
     }
 }
