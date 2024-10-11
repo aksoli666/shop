@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import shop.dto.request.CreateBookDto;
-import shop.dto.request.UpdateBookDto;
+import shop.dto.request.CreateBookRequestDto;
+import shop.dto.request.UpdateBookRequestDto;
 import shop.dto.responce.BookDto;
 import shop.service.BookService;
 
@@ -23,7 +23,7 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping
-    public BookDto createBook(@RequestBody CreateBookDto createBookDto) {
+    public BookDto createBook(@RequestBody CreateBookRequestDto createBookDto) {
         return bookService.createBook(createBookDto);
     }
 
@@ -38,7 +38,8 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public BookDto updateBook(@PathVariable Long id, @RequestBody UpdateBookDto updateBookDto) {
+    public BookDto updateBook(@PathVariable Long id,
+                              @RequestBody UpdateBookRequestDto updateBookDto) {
         return bookService.updateBookById(id, updateBookDto);
     }
 
