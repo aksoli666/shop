@@ -3,7 +3,8 @@ package shop.service.impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import shop.dto.request.CreateBookDto;
+import shop.dto.request.CreateBookRequestDto;
+import shop.dto.request.UpdateBookRequestDto;
 import shop.dto.responce.BookDto;
 import shop.entity.Book;
 import shop.exception.EntityNotFoundException;
@@ -18,25 +19,34 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
 
     @Override
-    public BookDto createBook(CreateBookDto createBookDto) {
+    public BookDto createBook(CreateBookRequestDto createBookDto) {
         return bookMapper.toBookDto(
-                bookRepository.createBook(
-                        bookMapper.toBook(createBookDto)
-                )
+                bookRepository.save(bookMapper.toBook(createBookDto))
         );
     }
 
     @Override
     public BookDto getBookById(Long id) {
-        Book bookFromRepository = bookRepository.findBookById(id).orElseThrow(
-                        () -> new EntityNotFoundException("Can`t get book by id: " + id));
-        return bookMapper.toBookDto(bookFromRepository);
+        Book book = bookRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Can`t get book by id: " + id));
+        return bookMapper.toBookDto(book);
     }
 
     @Override
     public List<BookDto> getAllBooks() {
-        return bookRepository.findAllBooks().stream()
-                .map(bookMapper::toBookDto)
-                .toList();
+        return bookMapper.toBookDtoList(bookRepository.findAll());
+    }
+
+    @Override
+    public BookDto updateBookById(Long id, UpdateBookRequestDto updateBookDto) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found. Id: " + id));
+        bookMapper.updateBookFromDto(updateBookDto, book);
+        return bookMapper.toBookDto(bookRepository.save(book));
+    }
+
+    @Override
+    public void deleteBookById(Long id) {
+        bookRepository.deleteById(id);
     }
 }

@@ -1,13 +1,9 @@
 package shop.repository;
 
-import java.util.List;
-import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import shop.entity.Book;
 
-public interface BookRepository {
-    Book createBook(Book book);
-
-    Optional<Book> findBookById(Long id);
-
-    List<Book> findAllBooks();
+@Repository
+public interface BookRepository extends JpaRepository<Book, Long> {
 }
