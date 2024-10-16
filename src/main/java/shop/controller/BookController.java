@@ -1,5 +1,6 @@
 package shop.controller;
 
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -24,7 +25,7 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping
-    public BookDto createBook(@RequestBody CreateBookRequestDto createBookDto) {
+    public BookDto createBook(@RequestBody @Valid CreateBookRequestDto createBookDto) {
         return bookService.createBook(createBookDto);
     }
 
@@ -40,7 +41,7 @@ public class BookController {
 
     @PutMapping("/{id}")
     public BookDto updateBook(@PathVariable Long id,
-                              @RequestBody UpdateBookRequestDto updateBookDto) {
+                              @RequestBody @Valid UpdateBookRequestDto updateBookDto) {
         return bookService.updateBookById(id, updateBookDto);
     }
 
