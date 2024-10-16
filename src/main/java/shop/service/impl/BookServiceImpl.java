@@ -3,6 +3,7 @@ package shop.service.impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import shop.dto.request.BookSearchParamsDto;
 import shop.dto.request.CreateBookRequestDto;
 import shop.dto.request.UpdateBookRequestDto;
 import shop.dto.responce.BookDto;
@@ -10,6 +11,7 @@ import shop.entity.Book;
 import shop.exception.EntityNotFoundException;
 import shop.mapper.BookMapper;
 import shop.repository.BookRepository;
+import shop.repository.book.BookSpecificationBuilder;
 import shop.service.BookService;
 
 @Service
@@ -17,6 +19,7 @@ import shop.service.BookService;
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
+    private final BookSpecificationBuilder bookSpecificationBuilder;
 
     @Override
     public BookDto createBook(CreateBookRequestDto createBookDto) {
@@ -48,5 +51,13 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBookById(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public List<BookDto> search(BookSearchParamsDto searchParamsDto) {
+        return bookRepository.findAll(bookSpecificationBuilder.build(searchParamsDto))
+                .stream()
+                .map(bookMapper::toBookDto)
+                .toList();
     }
 }
