@@ -1,4 +1,4 @@
-package shop.repository.book;
+package shop.repository.book.spec.tools.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;

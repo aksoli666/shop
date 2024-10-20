@@ -11,8 +11,8 @@ import shop.dto.responce.BookDto;
 import shop.entity.Book;
 import shop.exception.EntityNotFoundException;
 import shop.mapper.BookMapper;
-import shop.repository.BookRepository;
-import shop.repository.book.BookSpecificationBuilder;
+import shop.repository.book.BookRepository;
+import shop.repository.book.spec.tools.impl.BookSpecificationBuilder;
 import shop.service.BookService;
 
 @Service

@@ -1,4 +1,4 @@
-package shop.repository.book;
+package shop.repository.book.spec.tools.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
