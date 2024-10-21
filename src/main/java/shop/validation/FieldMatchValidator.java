@@ -1,9 +1,9 @@
-package shop.validator;
+package shop.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
+import java.util.Objects;
 import org.springframework.beans.BeanWrapperImpl;
-import shop.annatation.FieldMatch;
 
 public class FieldMatchValidator
         implements ConstraintValidator<FieldMatch, String> {
@@ -23,9 +23,6 @@ public class FieldMatchValidator
         String secondFieldValue = (String) new BeanWrapperImpl(field)
                 .getPropertyValue(secondFieldName);
 
-        if (firstFieldValue != null && secondFieldValue != null) {
-            return firstFieldValue.equals(secondFieldValue);
-        }
-        return false;
+        return Objects.equals(firstFieldValue, secondFieldValue);
     }
 }

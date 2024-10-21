@@ -1,10 +1,10 @@
 package shop.service;
 
-import shop.dto.request.RegisterUserRequestDto;
-import shop.dto.responce.RegisterUserResponseDto;
+import shop.dto.request.UserRegistrationRequestDto;
+import shop.dto.responce.UserResponseDto;
 import shop.exception.RegistrationException;
 
 public interface UserService {
-    RegisterUserResponseDto register(RegisterUserRequestDto registerUserRequestDto)
+    UserResponseDto register(UserRegistrationRequestDto userRegistrationRequestDto)
             throws RegistrationException;
 }

@@ -2,13 +2,13 @@ package shop.mapper;
 
 import org.mapstruct.Mapper;
 import shop.config.MapperConfig;
-import shop.dto.request.RegisterUserRequestDto;
-import shop.dto.responce.RegisterUserResponseDto;
+import shop.dto.request.UserRegistrationRequestDto;
+import shop.dto.responce.UserResponseDto;
 import shop.entity.User;
 
 @Mapper(config = MapperConfig.class)
 public interface UserMapper {
-    User toUser(RegisterUserRequestDto registerUserRequestDto);
+    User toUser(UserRegistrationRequestDto userRegistrationRequestDto);
 
-    RegisterUserResponseDto toRegisterUserResponseDto(User user);
+    UserResponseDto toRegisterUserResponseDto(User user);
 }
