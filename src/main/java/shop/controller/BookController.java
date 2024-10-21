@@ -7,6 +7,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class BookController {
             summary = "Create a new book",
             description = "Create a new book"
     )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto createBookDto) {
         return bookService.createBook(createBookDto);
@@ -41,6 +43,7 @@ public class BookController {
             summary = "Get a book by id",
             description = "Retrieve a book details by id"
     )
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     public BookDto getBookById(@PathVariable Long id) {
         return bookService.getBookById(id);
@@ -50,6 +53,7 @@ public class BookController {
             summary = "Get all books",
             description = "Retrieve book catalog"
     )
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public List<BookDto> getAllBooks(Pageable pageable) {
         return bookService.getAllBooks(pageable);
@@ -59,6 +63,7 @@ public class BookController {
             summary = "Update a book by id",
             description = "Update a specific book"
     )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public BookDto updateBook(@PathVariable Long id,
                               @RequestBody @Valid UpdateBookRequestDto updateBookDto) {
@@ -69,6 +74,7 @@ public class BookController {
             summary = "Delete a book by id",
             description = "Delete a specific book"
     )
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteBookById(@PathVariable Long id) {
         bookService.deleteBookById(id);
@@ -78,6 +84,7 @@ public class BookController {
             summary = "Search for books",
             description = "Search for books using a specific parameter"
     )
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/search")
     public List<BookDto> searchBook(BookSearchParamsDto searchParamsDto, Pageable pageable) {
         return bookService.search(searchParamsDto, pageable);
