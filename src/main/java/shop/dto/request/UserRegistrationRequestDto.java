@@ -2,6 +2,7 @@ package shop.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,5 +29,6 @@ public class UserRegistrationRequestDto {
     @NotBlank
     private String lastName;
     private String shippingAddress;
+    @NotEmpty
     private Set<Role> roles;
 }

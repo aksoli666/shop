@@ -33,7 +33,7 @@ public class BookController {
             summary = "Create a new book",
             description = "Create a new book"
     )
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto createBookDto) {
         return bookService.createBook(createBookDto);
