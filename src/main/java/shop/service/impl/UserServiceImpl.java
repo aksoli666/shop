@@ -8,6 +8,7 @@ import shop.dto.request.UserRegistrationRequestDto;
 import shop.dto.responce.UserResponseDto;
 import shop.entity.Role;
 import shop.entity.User;
+import shop.exception.EntityNotFoundException;
 import shop.exception.RegistrationException;
 import shop.mapper.UserMapper;
 import shop.repository.role.RoleRepository;
@@ -30,7 +31,8 @@ public class UserServiceImpl implements UserService {
         }
         User user = userMapper.toUser(registerUserRequestDto);
         user.setPassword(passwordEncoder.encode(registerUserRequestDto.getPassword()));
-        user.setRoles(Set.of(roleRepository.findByRole(Role.RoleName.ROLE_USER)));
+        user.setRoles(Set.of(roleRepository.findByRole(Role.RoleName.ROLE_USER)
+                .orElseThrow(() -> new EntityNotFoundException("Can`t find role"))));
         userRepository.save(user);
         return userMapper.toRegisterUserResponseDto(user);
     }
