@@ -6,7 +6,7 @@ import java.util.Objects;
 import org.springframework.beans.BeanWrapperImpl;
 
 public class FieldMatchValidator
-        implements ConstraintValidator<FieldMatch, String> {
+        implements ConstraintValidator<FieldMatch, Object> {
     private String firstFieldName;
     private String secondFieldName;
 
@@ -17,10 +17,10 @@ public class FieldMatchValidator
     }
 
     @Override
-    public boolean isValid(String field, ConstraintValidatorContext constraintValidatorContext) {
-        String firstFieldValue = (String) new BeanWrapperImpl(field)
+    public boolean isValid(Object field, ConstraintValidatorContext constraintValidatorContext) {
+        Object firstFieldValue = new BeanWrapperImpl(field)
                 .getPropertyValue(firstFieldName);
-        String secondFieldValue = (String) new BeanWrapperImpl(field)
+        Object secondFieldValue = new BeanWrapperImpl(field)
                 .getPropertyValue(secondFieldName);
 
         return Objects.equals(firstFieldValue, secondFieldValue);
