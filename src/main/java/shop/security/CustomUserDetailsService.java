@@ -1,4 +1,4 @@
-package shop.service.user.details;
+package shop.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
