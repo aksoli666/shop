@@ -1,7 +1,7 @@
 package shop.service;
 
-import shop.dto.request.UserRegistrationRequestDto;
-import shop.dto.responce.UserResponseDto;
+import shop.dto.request.user.UserRegistrationRequestDto;
+import shop.dto.responce.user.UserResponseDto;
 import shop.exception.RegistrationException;
 
 public interface UserService {

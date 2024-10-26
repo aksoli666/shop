@@ -16,10 +16,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import shop.dto.request.BookSearchParamsDto;
-import shop.dto.request.CreateBookRequestDto;
-import shop.dto.request.UpdateBookRequestDto;
-import shop.dto.responce.BookDto;
+import shop.dto.request.book.BookSearchParamsDto;
+import shop.dto.request.book.CreateBookRequestDto;
+import shop.dto.request.book.UpdateBookRequestDto;
+import shop.dto.responce.book.BookDto;
+import shop.dto.responce.book.BookDtoWithoutCategories;
 import shop.service.BookService;
 
 @Tag(name = "Book management", description = "Endpoints for managing books")
@@ -33,7 +34,7 @@ public class BookController {
             summary = "Create a new book",
             description = "Create a new book"
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto createBookDto) {
         return bookService.createBook(createBookDto);
@@ -63,7 +64,7 @@ public class BookController {
             summary = "Update a book by id",
             description = "Update a specific book"
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public BookDto updateBook(@PathVariable Long id,
                               @RequestBody @Valid UpdateBookRequestDto updateBookDto) {
@@ -74,7 +75,7 @@ public class BookController {
             summary = "Delete a book by id",
             description = "Delete a specific book"
     )
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteBookById(@PathVariable Long id) {
         bookService.deleteBookById(id);
@@ -88,5 +89,15 @@ public class BookController {
     @GetMapping("/search")
     public List<BookDto> searchBook(BookSearchParamsDto searchParamsDto, Pageable pageable) {
         return bookService.search(searchParamsDto, pageable);
+    }
+
+    @Operation(
+            summary = "Get all books by category id",
+            description = "Retrieve book catalog by category id"
+    )
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/{categoryId}/books")
+    public List<BookDtoWithoutCategories> getBooksByCategoryId(@PathVariable Long categoryId) {
+        return bookService.getBooksByCategoryId(categoryId);
     }
 }

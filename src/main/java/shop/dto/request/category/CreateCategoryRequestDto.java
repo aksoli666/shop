@@ -1,4 +1,4 @@
-package shop.dto.request;
+package shop.dto.request.category;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -6,9 +6,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserLoginRequestDto {
+public class CreateCategoryRequestDto {
     @NotBlank
-    private String email;
+    private String name;
     @NotBlank
-    private String password;
+    private String description;
 }

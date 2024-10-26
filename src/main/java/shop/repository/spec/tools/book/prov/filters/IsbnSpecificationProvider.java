@@ -1,4 +1,4 @@
-package shop.repository.book.prov.filters;
+package shop.repository.spec.tools.book.prov.filters;
 
 import java.util.Arrays;
 import org.springframework.data.jpa.domain.Specification;

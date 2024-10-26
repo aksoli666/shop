@@ -1,4 +1,4 @@
-package shop.dto.responce;
+package shop.dto.responce.user;
 
 import lombok.Getter;
 import lombok.Setter;

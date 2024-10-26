@@ -4,15 +4,15 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import shop.dto.request.UserRegistrationRequestDto;
-import shop.dto.responce.UserResponseDto;
+import shop.dto.request.user.UserRegistrationRequestDto;
+import shop.dto.responce.user.UserResponseDto;
 import shop.entity.Role;
 import shop.entity.User;
 import shop.exception.EntityNotFoundException;
 import shop.exception.RegistrationException;
 import shop.mapper.UserMapper;
-import shop.repository.role.RoleRepository;
-import shop.repository.user.UserRepository;
+import shop.repository.RoleRepository;
+import shop.repository.UserRepository;
 import shop.service.UserService;
 
 @Service

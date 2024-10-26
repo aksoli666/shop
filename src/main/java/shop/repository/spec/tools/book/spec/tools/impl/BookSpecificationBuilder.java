@@ -1,9 +1,9 @@
-package shop.repository.book.spec.tools.impl;
+package shop.repository.spec.tools.book.spec.tools.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import shop.dto.request.BookSearchParamsDto;
+import shop.dto.request.book.BookSearchParamsDto;
 import shop.entity.Book;
 import shop.repository.spec.tools.SpecificationBuilder;
 import shop.repository.spec.tools.SpecificationProviderManager;
