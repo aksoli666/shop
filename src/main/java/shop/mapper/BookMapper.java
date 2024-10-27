@@ -26,8 +26,6 @@ public interface BookMapper {
 
     void updateBookFromDto(UpdateBookRequestDto updateBookDto, @MappingTarget Book book);
 
-    BookDtoWithoutCategories toBookDtoWithoutCategories(Book book);
-
     List<BookDtoWithoutCategories> toBookDtoWithoutCategoriesList(List<Book> books);
 
     @AfterMapping

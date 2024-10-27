@@ -20,8 +20,8 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
     @EntityGraph(attributePaths = "categories")
     Page<Book> findAll(Pageable pageable);
 
-    @Query("SELECT b FROM Book b LEFT JOIN FETCH b.categories WHERE b.isDeleted = false")
-    List<Book> findAllWithCategories(Specification<Book> spec, Pageable pageable);
+    @EntityGraph(attributePaths = "categories")
+    Page<Book> findAll(Specification<Book> spec, Pageable pageable);
 
     @Query("SELECT b FROM Book b "
             + "JOIN b.categories c "
