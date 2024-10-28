@@ -22,7 +22,7 @@ import shop.dto.responce.category.CategoryDto;
 import shop.service.CategoryService;
 
 @RestController
-@RequestMapping(value = "/api/categories", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
@@ -32,7 +32,7 @@ public class CategoryController {
             description = "Create a new category")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping()
+    @PostMapping
     public CategoryDto createCategory(@RequestBody @Valid CreateCategoryRequestDto requestDto) {
         return categoryService.save(requestDto);
     }

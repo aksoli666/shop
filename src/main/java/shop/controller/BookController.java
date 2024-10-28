@@ -27,7 +27,7 @@ import shop.service.BookService;
 
 @Tag(name = "Book management", description = "Endpoints for managing books")
 @RestController
-@RequestMapping(value = "/api/books", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/books", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class BookController {
     private final BookService bookService;
