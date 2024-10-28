@@ -1,6 +1,6 @@
 package shop.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import shop.dto.request.book.BookSearchParamsDto;
 import shop.dto.request.book.CreateBookRequestDto;
@@ -13,13 +13,13 @@ public interface BookService {
 
     BookDto getBookById(Long id);
 
-    List<BookDto> getAllBooks(Pageable pageable);
+    Page<BookDto> getAllBooks(Pageable pageable);
 
     BookDto updateBookById(Long id, UpdateBookRequestDto updateBookDto);
 
     void deleteBookById(Long id);
 
-    List<BookDto> search(BookSearchParamsDto searchParamsDto, Pageable pageable);
+    Page<BookDto> search(BookSearchParamsDto searchParamsDto, Pageable pageable);
 
-    List<BookDtoWithoutCategories> getBooksByCategoryId(Long categoryId);
+    Page<BookDtoWithoutCategories> getBooksByCategoryId(Long categoryId, Pageable pageable);
 }

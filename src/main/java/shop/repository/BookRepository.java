@@ -1,6 +1,5 @@
 package shop.repository;
 
-import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,5 +25,5 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
     @Query("SELECT b FROM Book b "
             + "JOIN b.categories c "
             + "WHERE c.id = :categoryId AND b.isDeleted = false AND c.isDeleted = false")
-    List<Book> findAllByCategoryId(Long categoryId);
+    Page<Book> findAllByCategoryId(Long categoryId, Pageable pageable);
 }

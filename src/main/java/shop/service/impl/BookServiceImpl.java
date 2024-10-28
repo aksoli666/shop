@@ -1,8 +1,7 @@
 package shop.service.impl;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,9 +43,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> getAllBooks(Pageable pageable) {
-        Page<Book> booksPage = bookRepository.findAll(pageable);
-        return bookMapper.toBookDtoList(booksPage.getContent());
+    public Page<BookDto> getAllBooks(Pageable pageable) {
+        return bookMapper.toBookDtoPage(bookRepository.findAll(pageable));
     }
 
     @Override
@@ -64,22 +62,23 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> search(BookSearchParamsDto searchParamsDto, Pageable pageable) {
-        Page<Book> bookPage = bookRepository.findAll(
-                bookSpecificationBuilder.build(searchParamsDto), pageable);
-        return bookPage.getContent().stream()
-                .map(bookMapper::toBookDto)
-                .toList();
+    public Page<BookDto> search(BookSearchParamsDto searchParamsDto, Pageable pageable) {
+        return bookMapper.toBookDtoPage(
+                bookRepository.findAll(
+                        bookSpecificationBuilder.build(searchParamsDto), pageable)
+        );
     }
 
     @Override
-    public List<BookDtoWithoutCategories> getBooksByCategoryId(Long categoryId) {
-        return bookMapper.toBookDtoWithoutCategoriesList(
-                bookRepository.findAllByCategoryId(categoryId));
+    public Page<BookDtoWithoutCategories> getBooksByCategoryId(Long categoryId, Pageable pageable) {
+        return bookMapper.toBookDtoWithoutCategoriesPage(
+                bookRepository.findAllByCategoryId(categoryId, pageable));
     }
 
     private void fetchCategoriesAndSetToBook(Set<Long> categoryIds, Book book) {
-        Set<Category> categories = new HashSet<>(categoryRepository.findAllById(categoryIds));
+        Set<Category> categories = categoryIds.stream()
+                .map(categoryRepository::getReferenceById)
+                .collect(Collectors.toSet());
         book.setCategories(categories);
     }
 }

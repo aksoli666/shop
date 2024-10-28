@@ -1,6 +1,7 @@
 package shop.dto.request.book;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
@@ -23,5 +24,6 @@ public class UpdateBookRequestDto {
     private BigDecimal price;
     private String description;
     private String coverImage;
+    @NotEmpty
     private Set<Long> categoryIds = new HashSet<>();
 }

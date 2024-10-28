@@ -1,7 +1,7 @@
 package shop.service.impl;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import shop.dto.request.category.CreateCategoryRequestDto;
@@ -27,9 +27,9 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryDto> findAll(Pageable pageable) {
-        return categoryMapper.toCategoryDtoList(
-                categoryRepository.findAll(pageable).getContent());
+    public Page<CategoryDto> findAll(Pageable pageable) {
+        return categoryMapper.toCategoryDtoPage(
+                categoryRepository.findAll(pageable));
     }
 
     @Override

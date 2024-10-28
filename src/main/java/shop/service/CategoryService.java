@@ -1,6 +1,6 @@
 package shop.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import shop.dto.request.category.CreateCategoryRequestDto;
 import shop.dto.request.category.UpdateCategoryRequestDto;
@@ -9,7 +9,7 @@ import shop.dto.responce.category.CategoryDto;
 public interface CategoryService {
     CategoryDto getById(Long id);
 
-    List<CategoryDto> findAll(Pageable pageable);
+    Page<CategoryDto> findAll(Pageable pageable);
 
     CategoryDto save(CreateCategoryRequestDto createCategoryRequestDto);
 

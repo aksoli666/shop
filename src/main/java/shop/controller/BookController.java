@@ -3,9 +3,10 @@ package shop.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import shop.dto.request.book.BookSearchParamsDto;
 import shop.dto.request.book.CreateBookRequestDto;
@@ -35,6 +37,7 @@ public class BookController {
             description = "Create a new book"
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto createBookDto) {
         return bookService.createBook(createBookDto);
@@ -56,7 +59,7 @@ public class BookController {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
-    public List<BookDto> getAllBooks(Pageable pageable) {
+    public Page<BookDto> getAllBooks(Pageable pageable) {
         return bookService.getAllBooks(pageable);
     }
 
@@ -76,6 +79,7 @@ public class BookController {
             description = "Delete a specific book"
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteBookById(@PathVariable Long id) {
         bookService.deleteBookById(id);
@@ -87,7 +91,7 @@ public class BookController {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/search")
-    public List<BookDto> searchBook(BookSearchParamsDto searchParamsDto, Pageable pageable) {
+    public Page<BookDto> searchBook(BookSearchParamsDto searchParamsDto, Pageable pageable) {
         return bookService.search(searchParamsDto, pageable);
     }
 
@@ -97,7 +101,8 @@ public class BookController {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{categoryId}/books")
-    public List<BookDtoWithoutCategories> getBooksByCategoryId(@PathVariable Long categoryId) {
-        return bookService.getBooksByCategoryId(categoryId);
+    public Page<BookDtoWithoutCategories> getBooksByCategoryId(
+            @PathVariable Long categoryId, Pageable pageable) {
+        return bookService.getBooksByCategoryId(categoryId, pageable);
     }
 }
