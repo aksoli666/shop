@@ -2,8 +2,8 @@ package shop.mapper;
 
 import org.mapstruct.Mapper;
 import shop.config.MapperConfig;
-import shop.dto.request.UserRegistrationRequestDto;
-import shop.dto.responce.UserResponseDto;
+import shop.dto.request.user.UserRegistrationRequestDto;
+import shop.dto.responce.user.UserResponseDto;
 import shop.entity.User;
 
 @Mapper(config = MapperConfig.class)

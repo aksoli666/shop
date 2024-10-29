@@ -1,4 +1,4 @@
-package shop.repository.user;
+package shop.repository;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.EntityGraph;

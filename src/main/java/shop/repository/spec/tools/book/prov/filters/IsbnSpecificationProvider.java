@@ -1,4 +1,4 @@
-package shop.repository.book.prov.filters;
+package shop.repository.spec.tools.book.prov.filters;
 
 import java.util.Arrays;
 import org.springframework.data.jpa.domain.Specification;
@@ -16,6 +16,6 @@ public class IsbnSpecificationProvider implements SpecificationProvider<Book> {
     }
 
     public Specification<Book> getSpecification(String[] isbns) {
-        return (root, query, criteriaBuilder) -> root.get(ISBN_KEY).in(Arrays.stream(isbns));
+        return (root, query, criteriaBuilder) -> root.get(ISBN_KEY).in(Arrays.asList(isbns));
     }
 }
