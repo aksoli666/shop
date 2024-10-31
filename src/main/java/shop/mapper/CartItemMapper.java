@@ -3,9 +3,7 @@ package shop.mapper;
 import java.util.Set;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import shop.config.MapperConfig;
-import shop.dto.request.shopping.cart.UpdateQuantityBookRequestDto;
 import shop.dto.responce.cart.item.CartItemResponseDto;
 import shop.entity.CartItem;
 
@@ -16,8 +14,4 @@ public interface CartItemMapper {
     CartItemResponseDto toCartItemResponseDto(CartItem cartItem);
 
     Set<CartItemResponseDto> toCartItemResponseDtos(Set<CartItem> cartItems);
-
-    void updateCartItem(UpdateQuantityBookRequestDto requestDto, @MappingTarget CartItem cartItem);
-
-    void updateCartItem(CartItem source, @MappingTarget CartItem cartItem);
 }

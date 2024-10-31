@@ -2,6 +2,7 @@ package shop.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -53,7 +54,7 @@ public class CategoryController {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{id}")
-    public CategoryDto getCategoryById(@PathVariable Long id) {
+    public CategoryDto getCategoryById(@PathVariable @Positive Long id) {
         return categoryService.getById(id);
     }
 
@@ -63,7 +64,7 @@ public class CategoryController {
     )
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/{id}")
-    public CategoryDto updateCategory(@PathVariable Long id,
+    public CategoryDto updateCategory(@PathVariable @Positive Long id,
                                       @RequestBody @Valid UpdateCategoryRequestDto requestDto) {
         return categoryService.update(id, requestDto);
     }
@@ -75,7 +76,7 @@ public class CategoryController {
     //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void deleteCategory(@PathVariable Long id) {
+    public void deleteCategory(@PathVariable @Positive Long id) {
         categoryService.deleteById(id);
     }
 }

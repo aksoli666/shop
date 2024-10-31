@@ -7,21 +7,20 @@ import org.springframework.stereotype.Service;
 import shop.dto.request.user.UserRegistrationRequestDto;
 import shop.dto.responce.user.UserResponseDto;
 import shop.entity.Role;
-import shop.entity.ShoppingCart;
 import shop.entity.User;
 import shop.exception.EntityNotFoundException;
 import shop.exception.RegistrationException;
 import shop.mapper.UserMapper;
 import shop.repository.RoleRepository;
-import shop.repository.ShoppingCartRepository;
 import shop.repository.UserRepository;
+import shop.service.ShoppingCartService;
 import shop.service.UserService;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private final ShoppingCartService shoppingCartService;
     private final UserRepository userRepository;
-    private final ShoppingCartRepository shoppingCartRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
@@ -37,9 +36,7 @@ public class UserServiceImpl implements UserService {
         user.setRoles(Set.of(roleRepository.findByRole(Role.RoleName.ROLE_USER)
                 .orElseThrow(() -> new EntityNotFoundException("Can`t find role"))));
         userRepository.save(user);
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setUser(user);
-        shoppingCartRepository.save(shoppingCart);
+        shoppingCartService.createShoppingCart(user);
         return userMapper.toRegisterUserResponseDto(user);
     }
 }

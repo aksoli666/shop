@@ -11,12 +11,8 @@ import shop.entity.ShoppingCart;
 public interface ShoppingCartMapper {
     ShoppingCartResponseDto toShoppingCartResponseDto(ShoppingCart shoppingCart);
 
-    ShoppingCart toShoppingCart(ShoppingCartResponseDto shoppingCartResponseDto);
-
-    void updateShoppingCart(ShoppingCart shoppingCart, @MappingTarget ShoppingCart shoppingCar);
-
     @AfterMapping
-    default void setUserId(@MappingTarget ShoppingCartResponseDto responseDto,
+    default void setUserIdAndCartItems(@MappingTarget ShoppingCartResponseDto responseDto,
                            ShoppingCart shoppingCart) {
         responseDto.setUserId(shoppingCart.getUser().getId());
     }

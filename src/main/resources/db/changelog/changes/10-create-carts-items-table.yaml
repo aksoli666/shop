@@ -20,3 +20,7 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: fk_carts_items_cart_item
                     references: cart_items(id)
+        - addPrimaryKey:
+            tableName: carts_items
+            columnNames: shopping_cart_id, cart_item_id
+            constraintName: pk_carts_items
