@@ -1,5 +1,6 @@
 package shop.service.impl;
 
+import jakarta.transaction.Transactional;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
 
     @Override
+    @Transactional
     public UserResponseDto register(UserRegistrationRequestDto registerUserRequestDto)
             throws RegistrationException {
         if (userRepository.existsUserByEmail(registerUserRequestDto.getEmail())) {

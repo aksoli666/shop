@@ -31,7 +31,7 @@ public class ShoppingCartController {
             description = "Retrieve a cart details by id"
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping()
+    @GetMapping
     public ShoppingCartResponseDto getShoppingCartById(Authentication authentication) {
         return shoppingCartService.getShoppingCartById(authentication);
     }
@@ -41,7 +41,7 @@ public class ShoppingCartController {
             description = "Add book to shopping cart"
     )
     @PreAuthorize("hasRole('ROLE_USER')")
-    @PostMapping()
+    @PostMapping
     public ShoppingCartResponseDto addBookToShoppingCart(
             Authentication authentication, @RequestBody @Valid AddBookToCartRequestDto requestDto) {
         return shoppingCartService.addBookToShoppingCart(authentication, requestDto);
