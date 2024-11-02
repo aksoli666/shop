@@ -3,6 +3,7 @@ package shop.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,7 +50,7 @@ public class BookController {
     )
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{id}")
-    public BookDto getBookById(@PathVariable Long id) {
+    public BookDto getBookById(@PathVariable @Positive Long id) {
         return bookService.getBookById(id);
     }
 
@@ -69,7 +70,7 @@ public class BookController {
     )
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
-    public BookDto updateBook(@PathVariable Long id,
+    public BookDto updateBook(@PathVariable @Positive Long id,
                               @RequestBody @Valid UpdateBookRequestDto updateBookDto) {
         return bookService.updateBookById(id, updateBookDto);
     }
@@ -81,7 +82,7 @@ public class BookController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
-    public void deleteBookById(@PathVariable Long id) {
+    public void deleteBookById(@PathVariable @Positive Long id) {
         bookService.deleteBookById(id);
     }
 
@@ -102,7 +103,7 @@ public class BookController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{categoryId}/books")
     public Page<BookDtoWithoutCategories> getBooksByCategoryId(
-            @PathVariable Long categoryId, Pageable pageable) {
+            @PathVariable @Positive Long categoryId, Pageable pageable) {
         return bookService.getBooksByCategoryId(categoryId, pageable);
     }
 }
