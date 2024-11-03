@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-statuses
+      author: dorofieieva
+      changes:
+        - insert:
+            tableName: statuses
+            columns:
+              - column:
+                  name: status
+                  value: 'COMPLETED'
+        - insert:
+            tableName: statuses
+            columns:
+              - column:
+                  name: status
+                  value: 'PENDING'
+        - insert:
+            tableName: statuses
+            columns:
+              - column:
+                  name: status
+                  value: 'DELIVERED'

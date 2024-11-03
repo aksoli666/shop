@@ -18,6 +18,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -80,5 +81,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return !isDeleted;
+    }
+
+    public static Long getUserIdFromAuthentication(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return user.getId();
     }
 }

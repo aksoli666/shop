@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_statuses_table
+      author: dorofieieva
+      changes:
+        - createTable:
+            tableName: statuses
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: status
+                  type: enum('COMPLETED', 'PENDING', 'DELIVERED')
+                  constraints:
+                    nullable: false
