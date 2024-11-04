@@ -21,12 +21,10 @@ databaseChangeLog:
                     foreignKeyName: fk_orders_user
                     references: users(id)
               - column:
-                  name: status_id
-                  type: bigint
+                  name: status
+                  type: enum('COMPLETED', 'PENDING', 'DELIVERED')
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_orders_status
-                    references: statuses(id)
               - column:
                   name: total
                   type: decimal(10, 2)

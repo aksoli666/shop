@@ -1,6 +1,6 @@
 package shop.service.impl;
 
-import static shop.entity.User.getUserIdFromAuthentication;
+import static shop.security.CustomUserDetailsService.getUserIdFromAuthentication;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
