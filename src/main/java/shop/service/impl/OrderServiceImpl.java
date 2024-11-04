@@ -102,7 +102,7 @@ public class OrderServiceImpl implements OrderService {
     private Order createOrder(User user, PlaceOrderRequestDto requestDto) {
         Order order = new Order();
         order.setUser(user);
-        order.setStatus(Order.Status.COMPLETED);
+        order.setStatus(Order.Status.PENDING);
         order.setOrderDate(LocalDateTime.now());
         order.setShippingAddress(requestDto.getShippingAddress());
         return order;

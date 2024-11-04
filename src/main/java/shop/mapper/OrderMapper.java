@@ -7,7 +7,7 @@ import shop.config.MapperConfig;
 import shop.dto.responce.order.OrderResponseDto;
 import shop.entity.Order;
 
-@Mapper(config = MapperConfig.class, uses = {OrderItemMapper.class})
+@Mapper(config = MapperConfig.class, uses = OrderItemMapper.class)
 public interface OrderMapper {
     OrderResponseDto toOrderResponseDto(Order order);
 
