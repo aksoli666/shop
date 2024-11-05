@@ -1,5 +1,7 @@
 package shop.service.impl;
 
+import static shop.security.CustomUserDetailsService.getUserIdFromAuthentication;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -92,10 +94,5 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         shoppingCart.removeItemFromCart(cartItem);
         cartItemRepository.delete(cartItem);
         shoppingCartRepository.save(shoppingCart);
-    }
-
-    private Long getUserIdFromAuthentication(Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
-        return user.getId();
     }
 }
