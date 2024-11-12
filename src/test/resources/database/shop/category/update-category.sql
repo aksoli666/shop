@@ -1,1 +1,1 @@
-UPDATE books SET title = 'T Category Upd' WHERE id = 9;
+UPDATE books SET title = 'J Category Upd' WHERE id = 9;

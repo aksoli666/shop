@@ -41,6 +41,8 @@ import shop.dto.responce.category.CategoryDto;
 )
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CategoryControllerTest {
+    private static final String ADD_CATEGORY_FOR_UPDATE_SQL =
+            "classpath:database/shop/category/add-category-for-update.sql";
     private static final String ADD_CATEGORY_FOR_DELETE_SQL =
             "classpath:database/shop/category/add-category-for-delete.sql";
     private static final String UPDATE_CATEGORY_SQL =
@@ -49,7 +51,6 @@ public class CategoryControllerTest {
             "classpath:database/shop/category/add-category-for-create.sql";
     private static final String URL_WITHOUT_ID = "/categories";
     private static final String URL_WITH_ID = "/categories/{id}";
-    private static final Long CATEGORY_ID = 5L;
     private static final Long DELETED_CATEGORY_ID = 8L;
     private static final Pageable pageable = PageRequest.of(0, 20);
 
@@ -164,17 +165,21 @@ public class CategoryControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     @Sql(
+            scripts = ADD_CATEGORY_FOR_UPDATE_SQL,
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
+    )
+    @Sql(
             scripts = UPDATE_CATEGORY_SQL,
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
     )
     @DisplayName("Update a specific category")
     public void updateCategory_GivenDto_Success() throws Exception {
         UpdateCategoryRequestDto dto = new UpdateCategoryRequestDto();
-        dto.setName("E Category Upd");
-        dto.setDescription("E Description for Category E");
+        dto.setName("J Category Upd");
+        dto.setDescription("J Description for Category J");
 
         CategoryDto expected = new CategoryDto(
-                CATEGORY_ID,
+                9L,
                 dto.getName(),
                 dto.getDescription()
         );
@@ -182,7 +187,7 @@ public class CategoryControllerTest {
         String json = objectMapper.writeValueAsString(expected);
 
         MvcResult result = mockMvc.perform(
-                MockMvcRequestBuilders.post(URL_WITH_ID, CATEGORY_ID)
+                MockMvcRequestBuilders.post(URL_WITH_ID, 9L)
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
