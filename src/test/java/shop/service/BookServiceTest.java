@@ -70,26 +70,12 @@ public class BookServiceTest {
         dto.setPrice(BOOK_PRICE_CORRECT);
         dto.setCategoryIds(new HashSet<>(Set.of(ID_1L_CORRECT)));
 
-        Category category = new Category();
-        category.setName(CATEGORY_NAME_CORRECT);
+        Book book = createBookId();
 
-        Book book = new Book();
-        book.setTitle(BOOK_TITLE_CORRECT);
-        book.setAuthor(BOOK_AUTHOR_CORRECT);
-        book.setIsbn(BOOK_ISBN_CORRECT);
-        book.setPrice(BOOK_PRICE_CORRECT);
-        book.setCategories(new HashSet<>(Set.of(category)));
-
-        BookDto expected = new BookDto();
-        expected.setId(ID_1L_CORRECT);
-        expected.setTitle(BOOK_TITLE_CORRECT);
-        expected.setAuthor(BOOK_AUTHOR_CORRECT);
-        expected.setIsbn(BOOK_ISBN_CORRECT);
-        expected.setPrice(BOOK_PRICE_CORRECT);
-        expected.setCategoryIds(new HashSet<>(Set.of(ID_1L_CORRECT)));
+        BookDto expected = createBookDto();
 
         when(bookMapper.toBook(dto)).thenReturn(book);
-        when(categoryRepository.getReferenceById(ID_1L_CORRECT)).thenReturn(category);
+        when(categoryRepository.getReferenceById(ID_1L_CORRECT)).thenReturn(createCategory());
         when(bookRepository.save(book)).thenReturn(book);
         when(bookMapper.toBookDto(book)).thenReturn(expected);
 
@@ -103,24 +89,9 @@ public class BookServiceTest {
             Verify getBookById(...), return BookDto
             """)
     public void getBookById_ValidId_returnBookDto() {
-        Category category = new Category();
-        category.setName(CATEGORY_NAME_CORRECT);
+        Book book = createBookId();
 
-        Book book = new Book();
-        book.setId(ID_1L_CORRECT);
-        book.setTitle(BOOK_TITLE_CORRECT);
-        book.setAuthor(BOOK_AUTHOR_CORRECT);
-        book.setIsbn(BOOK_ISBN_CORRECT);
-        book.setPrice(BOOK_PRICE_CORRECT);
-        book.setCategories(new HashSet<>(Set.of(category)));
-
-        BookDto expected = new BookDto();
-        expected.setId(ID_1L_CORRECT);
-        expected.setTitle(BOOK_TITLE_CORRECT);
-        expected.setAuthor(BOOK_AUTHOR_CORRECT);
-        expected.setIsbn(BOOK_ISBN_CORRECT);
-        expected.setPrice(BOOK_PRICE_CORRECT);
-        expected.setCategoryIds(new HashSet<>(Set.of(ID_1L_CORRECT)));
+        BookDto expected = createBookDto();
 
         when(bookRepository.findBookById(ID_1L_CORRECT)).thenReturn(Optional.of(book));
         when(bookMapper.toBookDto(book)).thenReturn(expected);
@@ -147,24 +118,9 @@ public class BookServiceTest {
     public void getAllBooks_ValidPage_returnPageBookDto() {
         pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
 
-        Category category = new Category();
-        category.setName(CATEGORY_NAME_CORRECT);
+        Book book = createBookId();
 
-        Book book = new Book();
-        book.setId(ID_1L_CORRECT);
-        book.setTitle(BOOK_TITLE_CORRECT);
-        book.setAuthor(BOOK_AUTHOR_CORRECT);
-        book.setIsbn(BOOK_ISBN_CORRECT);
-        book.setPrice(BOOK_PRICE_CORRECT);
-        book.setCategories(new HashSet<>(Set.of(category)));
-
-        BookDto dto = new BookDto();
-        dto.setId(ID_1L_CORRECT);
-        dto.setTitle(BOOK_TITLE_CORRECT);
-        dto.setAuthor(BOOK_AUTHOR_CORRECT);
-        dto.setIsbn(BOOK_ISBN_CORRECT);
-        dto.setPrice(BOOK_PRICE_CORRECT);
-        dto.setCategoryIds(new HashSet<>(Set.of(ID_1L_CORRECT)));
+        BookDto dto = createBookDto();
 
         Page<Book> books = new PageImpl<>(List.of(book), pageable, 1);
         Page<BookDto> expected = new PageImpl<>(List.of(dto), pageable, 1);
@@ -182,34 +138,14 @@ public class BookServiceTest {
             Verify updateBookById(...), return BookDto
             """)
     public void updateBookById_ValidId_returnBookDto() {
-        UpdateBookRequestDto dto = new UpdateBookRequestDto();
-        dto.setTitle(BOOK_TITLE_CORRECT);
-        dto.setAuthor(BOOK_AUTHOR_CORRECT);
-        dto.setIsbn(BOOK_ISBN_CORRECT);
-        dto.setPrice(BOOK_PRICE_CORRECT);
-        dto.setCategoryIds(new HashSet<>(Set.of(ID_1L_CORRECT)));
+        UpdateBookRequestDto dto = createUpdateBookRequestDto();
 
-        Category category = new Category();
-        category.setName(CATEGORY_NAME_CORRECT);
+        Book book = createBookId();
 
-        Book book = new Book();
-        book.setId(ID_1L_CORRECT);
-        book.setTitle(BOOK_TITLE_CORRECT);
-        book.setAuthor(BOOK_AUTHOR_CORRECT);
-        book.setIsbn(BOOK_ISBN_CORRECT);
-        book.setPrice(BOOK_PRICE_CORRECT);
-        book.setCategories(new HashSet<>(Set.of(category)));
-
-        BookDto expected = new BookDto();
-        expected.setId(ID_1L_CORRECT);
-        expected.setTitle(BOOK_TITLE_CORRECT);
-        expected.setAuthor(BOOK_AUTHOR_CORRECT);
-        expected.setIsbn(BOOK_ISBN_CORRECT);
-        expected.setPrice(BOOK_PRICE_CORRECT);
-        expected.setCategoryIds(new HashSet<>(Set.of(ID_1L_CORRECT)));
+        BookDto expected = createBookDto();
 
         when(bookRepository.findById(ID_1L_CORRECT)).thenReturn(Optional.of(book));
-        when(categoryRepository.getReferenceById(ID_1L_CORRECT)).thenReturn(category);
+        when(categoryRepository.getReferenceById(ID_1L_CORRECT)).thenReturn(createCategory());
         when(bookRepository.save(book)).thenReturn(book);
         when(bookMapper.toBookDto(book)).thenReturn(expected);
 
@@ -233,24 +169,9 @@ public class BookServiceTest {
 
         Specification<Book> build = specificationBuilder.build(params);
 
-        Category category = new Category();
-        category.setName(CATEGORY_NAME_CORRECT);
+        Book book = createBookId();
 
-        Book book = new Book();
-        book.setId(ID_1L_CORRECT);
-        book.setTitle(BOOK_TITLE_CORRECT);
-        book.setAuthor(BOOK_AUTHOR_CORRECT);
-        book.setIsbn(BOOK_ISBN_CORRECT);
-        book.setPrice(BOOK_PRICE_CORRECT);
-        book.setCategories(new HashSet<>(Set.of(category)));
-
-        BookDto dto = new BookDto();
-        dto.setId(ID_1L_CORRECT);
-        dto.setTitle(BOOK_TITLE_CORRECT);
-        dto.setAuthor(BOOK_AUTHOR_CORRECT);
-        dto.setIsbn(BOOK_ISBN_CORRECT);
-        dto.setPrice(BOOK_PRICE_CORRECT);
-        dto.setCategoryIds(new HashSet<>(Set.of(ID_1L_CORRECT)));
+        BookDto dto = createBookDto();
 
         Page<Book> books = new PageImpl<>(List.of(book), pageable, 1);
         Page<BookDto> expected = new PageImpl<>(List.of(dto), pageable, 1);
@@ -270,16 +191,7 @@ public class BookServiceTest {
     public void getBooksByCategoryId_ValidCategoryId_returnPageBookDtoWithoutCategory() {
         pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
 
-        Category category = new Category();
-        category.setName(CATEGORY_NAME_CORRECT);
-
-        Book book = new Book();
-        book.setId(ID_1L_CORRECT);
-        book.setTitle(BOOK_TITLE_CORRECT);
-        book.setAuthor(BOOK_AUTHOR_CORRECT);
-        book.setIsbn(BOOK_ISBN_CORRECT);
-        book.setPrice(BOOK_PRICE_CORRECT);
-        book.setCategories(new HashSet<>(Set.of(category)));
+        Book book = createBookId();
 
         BookDtoWithoutCategories dto = new BookDtoWithoutCategories();
         dto.setId(ID_1L_CORRECT);
@@ -297,5 +209,44 @@ public class BookServiceTest {
         Page<BookDtoWithoutCategories> actual = bookService.getBooksByCategoryId(ID_1L_CORRECT, pageable);
 
         assertEquals(expected, actual);
+    }
+
+    private Category createCategory() {
+        Category category = new Category();
+        category.setName(CATEGORY_NAME_CORRECT);
+        return category;
+    }
+
+    private Book createBookId() {
+        Category category = createCategory();
+
+        Book book = new Book();
+        book.setTitle(BOOK_TITLE_CORRECT);
+        book.setAuthor(BOOK_AUTHOR_CORRECT);
+        book.setIsbn(BOOK_ISBN_CORRECT);
+        book.setPrice(BOOK_PRICE_CORRECT);
+        book.setCategories(new HashSet<>(Set.of(category)));
+        return book;
+    }
+
+    private BookDto createBookDto() {
+        BookDto dto = new BookDto();
+        dto.setId(ID_1L_CORRECT);
+        dto.setTitle(BOOK_TITLE_CORRECT);
+        dto.setAuthor(BOOK_AUTHOR_CORRECT);
+        dto.setIsbn(BOOK_ISBN_CORRECT);
+        dto.setPrice(BOOK_PRICE_CORRECT);
+        dto.setCategoryIds(new HashSet<>(Set.of(ID_1L_CORRECT)));
+        return dto;
+    }
+
+    private UpdateBookRequestDto createUpdateBookRequestDto() {
+        UpdateBookRequestDto dto = new UpdateBookRequestDto();
+        dto.setTitle(BOOK_TITLE_CORRECT);
+        dto.setAuthor(BOOK_AUTHOR_CORRECT);
+        dto.setIsbn(BOOK_ISBN_CORRECT);
+        dto.setPrice(BOOK_PRICE_CORRECT);
+        dto.setCategoryIds(new HashSet<>(Set.of(ID_1L_CORRECT)));
+        return dto;
     }
 }

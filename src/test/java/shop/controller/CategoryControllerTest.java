@@ -1,5 +1,7 @@
 package shop.controller;
 
+import static org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
@@ -12,13 +14,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers;
 import org.springframework.test.context.jdbc.Sql;
@@ -28,41 +28,29 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import shop.dto.request.category.CreateCategoryRequestDto;
 import shop.dto.request.category.UpdateCategoryRequestDto;
 import shop.dto.responce.category.CategoryDto;
 
-import static org.testcontainers.shaded.org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
-
+@Sql(
+        scripts = {"classpath:database/shop/category/add-categories.sql"},
+        executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS
+)
+@Sql(
+        scripts = {"classpath:database/shop/category/delete-categories.sql"},
+        executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS
+)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CategoryControllerTest {
-    private static final String ADD_CATEGORIES_SQL =
-            "database/shop/category/add-categories.sql";
-    private static final String DELETE_CATEGORIES_SQL =
-            "database/shop/category/delete-categories.sql";
-    private static final String ADD_CATEGORY_SQL =
-            "classpath:database/shop/category/add-category.sql";
-    private static final String DELETE_CATEGORY_BY_NAME_SQL =
-            "classpath:database/shop/category/delete-category-by-name.sql";
-    private static final String ADD_CATEGORY_GET_BY_ID_SQL =
-            "classpath:database/shop/category/add-category-for-get-by-id.sql";
-    private static final String DELETE_CATEGORY_GET_BY_ID_SQL =
-            "classpath:database/shop/category/delete-category-for-get-by-id.sql";
-    private static final String ADD_CATEGORY_FOR_UPDATE_SQL =
-            "classpath:database/shop/category/add-category-for-update.sql";
+    private static final String ADD_CATEGORY_FOR_DELETE_SQL =
+            "classpath:database/shop/category/add-category-for-delete.sql";
     private static final String UPDATE_CATEGORY_SQL =
             "classpath:database/shop/category/update-category.sql";
-    private static final String DELETE_CATEGORY_FOR_UPDATE_SQL =
-            "classpath:database/shop/category/delete-category-for-update.sql";
-    private static final String ADD_CATEGORY_FOR_DELETE_BY_ID_SQL =
-            "classpath:database/shop/category/add-category-for-delete-by-id.sql";
-    private static final String DELETE_CATEGORY_FOR_DELETE_BY_ID_SQL =
-            "classpath:database/shop/category/delete-category-for-delete-by-id.sql";
+    private static final String ADD_CATEGORY_FOR_CREATE_SQL =
+            "classpath:database/shop/category/add-category-for-create.sql";
     private static final String URL_WITHOUT_ID = "/categories";
     private static final String URL_WITH_ID = "/categories/{id}";
-    private static final Long CATEGORY_ID_FOR_GET_BY_ID = 8L;
-    private static final Long CATEGORY_ID_FOR_UPDATE = 9L;
-    private static final Long CATEGORY_ID_FOR_DELETE = 10L;
+    private static final Long CATEGORY_ID = 5L;
+    private static final Long DELETED_CATEGORY_ID = 8L;
     private static final Pageable pageable = PageRequest.of(0, 20);
 
     private static MockMvc mockMvc;
@@ -80,10 +68,6 @@ public class CategoryControllerTest {
                 .build();
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
-            ScriptUtils.executeSqlScript(
-                    connection,
-                    new ClassPathResource(ADD_CATEGORIES_SQL)
-            );
         }
     }
 
@@ -98,33 +82,21 @@ public class CategoryControllerTest {
     static void teardown(DataSource dataSource) {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(true);
-            ScriptUtils.executeSqlScript(
-                    connection,
-                    new ClassPathResource(DELETE_CATEGORIES_SQL)
-            );
         }
     }
 
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     @Sql(
-            scripts = {ADD_CATEGORY_SQL},
+            scripts = {ADD_CATEGORY_FOR_CREATE_SQL},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
-    @Sql(
-            scripts = {DELETE_CATEGORY_BY_NAME_SQL},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
     )
     @DisplayName("Create a new category")
     public void createCategory_ValidRequestDto_Success() throws Exception {
-        CreateCategoryRequestDto dto = new CreateCategoryRequestDto();
-        dto.setName("E Category");
-        dto.setDescription("E Description");
-
         CategoryDto expected = new CategoryDto(
-                5L,
-                "E Category",
-                "E Description");
+                10L,
+                "Y Category",
+                "Y Description");
 
         String json = objectMapper.writeValueAsString(expected);
 
@@ -169,23 +141,15 @@ public class CategoryControllerTest {
 
     @WithMockUser(username = "user")
     @Test
-    @Sql(
-            scripts = ADD_CATEGORY_GET_BY_ID_SQL,
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
-    @Sql(
-            scripts = DELETE_CATEGORY_GET_BY_ID_SQL,
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
-    )
     @DisplayName("Retrieve a category details by id")
     public void getCategoryById_GivenDto_Success() throws Exception {
         CategoryDto expected = new CategoryDto(
-                8L,
-                "R Category",
-                "R Description for Category R");
+                6L,
+                "E Category",
+                "E Description for Category E");
 
         MvcResult result = mockMvc.perform(
-                MockMvcRequestBuilders.get(URL_WITH_ID, CATEGORY_ID_FOR_GET_BY_ID)
+                MockMvcRequestBuilders.get(URL_WITH_ID, 6L)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
@@ -200,25 +164,17 @@ public class CategoryControllerTest {
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     @Test
     @Sql(
-            scripts = ADD_CATEGORY_FOR_UPDATE_SQL,
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
-    @Sql(
             scripts = UPDATE_CATEGORY_SQL,
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
-    )
-    @Sql(
-            scripts = DELETE_CATEGORY_FOR_UPDATE_SQL,
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
     )
     @DisplayName("Update a specific category")
     public void updateCategory_GivenDto_Success() throws Exception {
         UpdateCategoryRequestDto dto = new UpdateCategoryRequestDto();
-        dto.setName("T Category Upd");
-        dto.setDescription("T Description for Category T");
+        dto.setName("E Category Upd");
+        dto.setDescription("E Description for Category E");
 
         CategoryDto expected = new CategoryDto(
-                CATEGORY_ID_FOR_UPDATE,
+                CATEGORY_ID,
                 dto.getName(),
                 dto.getDescription()
         );
@@ -226,7 +182,7 @@ public class CategoryControllerTest {
         String json = objectMapper.writeValueAsString(expected);
 
         MvcResult result = mockMvc.perform(
-                MockMvcRequestBuilders.post(URL_WITH_ID, CATEGORY_ID_FOR_UPDATE)
+                MockMvcRequestBuilders.post(URL_WITH_ID, CATEGORY_ID)
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -243,15 +199,11 @@ public class CategoryControllerTest {
     @Test
     @DisplayName("Delete a category book")
     @Sql(
-            scripts = ADD_CATEGORY_FOR_DELETE_BY_ID_SQL,
+            scripts = ADD_CATEGORY_FOR_DELETE_SQL,
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD
     )
-    @Sql(
-            scripts = DELETE_CATEGORY_FOR_DELETE_BY_ID_SQL,
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD
-    )
     public void deleteCategoryBook_GivenDto_Success() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete(URL_WITH_ID, CATEGORY_ID_FOR_DELETE)
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL_WITH_ID, DELETED_CATEGORY_ID)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
     }

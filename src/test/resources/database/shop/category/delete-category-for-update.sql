@@ -1,1 +1,1 @@
-DELETE FROM categories WHERE id = 9;
+DELETE FROM categories WHERE id = 10;

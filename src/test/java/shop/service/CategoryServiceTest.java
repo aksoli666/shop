@@ -40,7 +40,6 @@ public class CategoryServiceTest {
     private CategoryRepository categoryRepository;
     @Mock
     private CategoryMapper categoryMapper;
-    private Pageable pageable;
 
     @Test
     @DisplayName("""
@@ -51,15 +50,9 @@ public class CategoryServiceTest {
         dto.setName(CATEGORY_NAME_CORRECT);
         dto.setDescription(CATEGORY_DESCRIPTION_CORRECT);
 
-        Category category = new Category();
-        category.setId(ID_1L_CORRECT);
-        category.setName(CATEGORY_NAME_CORRECT);
-        category.setDescription(CATEGORY_DESCRIPTION_CORRECT);
+        Category category = createCategory();
 
-        CategoryDto expected = new CategoryDto(
-                ID_1L_CORRECT,
-                CATEGORY_NAME_CORRECT,
-                CATEGORY_DESCRIPTION_CORRECT);
+        CategoryDto expected = createCategoryDto();
 
         when(categoryMapper.toCategory(dto)).thenReturn(category);
         when(categoryRepository.save(category)).thenReturn(category);
@@ -75,15 +68,9 @@ public class CategoryServiceTest {
             Verify getById(...), return CategoryDto
             """)
     public void getById_ValidId_returnCategoryDto() {
-        Category category = new Category();
-        category.setId(ID_1L_CORRECT);
-        category.setName(CATEGORY_NAME_CORRECT);
-        category.setDescription(CATEGORY_DESCRIPTION_CORRECT);
+        Category category = createCategory();
 
-        CategoryDto expected = new CategoryDto(
-                ID_1L_CORRECT,
-                CATEGORY_NAME_CORRECT,
-                CATEGORY_DESCRIPTION_CORRECT);
+        CategoryDto expected = createCategoryDto();
 
         when(categoryRepository.findById(ID_1L_CORRECT)).thenReturn(Optional.of(category));
         when(categoryMapper.toCategoryDto(category)).thenReturn(expected);
@@ -108,17 +95,11 @@ public class CategoryServiceTest {
             Verify findAll(...), return Page<CategoryDto>
             """)
     public void findAll_ValidPage_returnPageCategoryDto() {
-        pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
+        Pageable pageable = PageRequest.of(PAGE_NUMBER, PAGE_SIZE);
 
-        Category category = new Category();
-        category.setId(ID_1L_CORRECT);
-        category.setName(CATEGORY_NAME_CORRECT);
-        category.setDescription(CATEGORY_DESCRIPTION_CORRECT);
+        Category category = createCategory();
 
-        CategoryDto dto = new CategoryDto(
-                ID_1L_CORRECT,
-                CATEGORY_NAME_CORRECT,
-                CATEGORY_DESCRIPTION_CORRECT);
+        CategoryDto dto = createCategoryDto();
 
         Page<Category> categories = new PageImpl<>(List.of(category), pageable, 1);
         Page<CategoryDto> expected = new PageImpl<>(List.of(dto), pageable, 1);
@@ -140,15 +121,9 @@ public class CategoryServiceTest {
         dto.setName(CATEGORY_NAME_CORRECT);
         dto.setDescription(CATEGORY_DESCRIPTION_CORRECT);
 
-        Category category = new Category();
-        category.setId(ID_1L_CORRECT);
-        category.setName(CATEGORY_NAME_CORRECT);
-        category.setDescription(CATEGORY_DESCRIPTION_CORRECT);
+        Category category = createCategory();
 
-        CategoryDto expected = new CategoryDto(
-                ID_1L_CORRECT,
-                CATEGORY_NAME_CORRECT,
-                CATEGORY_DESCRIPTION_CORRECT);
+        CategoryDto expected = createCategoryDto();
 
         when(categoryRepository.findById(ID_1L_CORRECT)).thenReturn(Optional.of(category));
         when(categoryRepository.save(category)).thenReturn(category);
@@ -163,9 +138,24 @@ public class CategoryServiceTest {
     @DisplayName("""
             Verify update(...), throw EntityNotFounDException
             """)
-    public void update_InvalidId_throwEntityNotFounDException() {
+    public void update_InvalidId_throwEntityNotFoundException() {
         when(categoryRepository.findById(INCORRECT_ID)).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class,
                 () -> categoryService.update(INCORRECT_ID, new UpdateCategoryRequestDto()));
+    }
+
+    private Category createCategory() {
+        Category category = new Category();
+        category.setId(ID_1L_CORRECT);
+        category.setName(CATEGORY_NAME_CORRECT);
+        category.setDescription(CATEGORY_DESCRIPTION_CORRECT);
+        return category;
+    }
+
+    private CategoryDto createCategoryDto() {
+        return new CategoryDto(
+                ID_1L_CORRECT,
+                CATEGORY_NAME_CORRECT,
+                CATEGORY_DESCRIPTION_CORRECT);
     }
 }
