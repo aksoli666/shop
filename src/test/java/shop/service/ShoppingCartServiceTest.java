@@ -5,13 +5,16 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static shop.util.TestUtil.createBook;
+import static shop.util.TestUtil.createCartItem;
+import static shop.util.TestUtil.createShoppingCart;
+import static shop.util.TestUtil.createShoppingCartResponseDto;
+import static shop.util.TestUtil.createUser;
+import static shop.util.TestUtil.toCartItemResponseDto;
 
-import java.math.BigDecimal;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,12 +25,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import shop.dto.request.shopping.cart.AddBookToCartRequestDto;
 import shop.dto.request.shopping.cart.UpdateQuantityBookRequestDto;
-import shop.dto.responce.cart.item.CartItemResponseDto;
 import shop.dto.responce.shopping.cart.ShoppingCartResponseDto;
 import shop.entity.Book;
 import shop.entity.CartItem;
-import shop.entity.Category;
-import shop.entity.Role;
 import shop.entity.ShoppingCart;
 import shop.entity.User;
 import shop.exception.EntityNotFoundException;
@@ -258,99 +258,5 @@ public class ShoppingCartServiceTest {
         assertThrows(EntityNotFoundException.class,
                 () -> shoppingCartService.removeBookFromShoppingCart(authentication,
                         INCORRECT_ID));
-    }
-
-    private User createUser() {
-        Role role = new Role();
-        role.setId(ID_1L_CORRECT);
-        role.setRole(Role.RoleName.ROLE_USER);
-
-        User user = new User();
-        user.setId(ID_1L_CORRECT);
-        user.setFirstName("Name");
-        user.setLastName("LastName");
-        user.setEmail("email@gmail.com");
-        user.setPassword("password");
-        user.setShippingAddress("address");
-        user.setRoles(Set.of(role));
-
-        return user;
-    }
-
-    private Book createBook() {
-        Category category = new Category();
-        category.setId(ID_1L_CORRECT);
-        category.setName("Name");
-
-        Book book = new Book();
-        book.setId(ID_1L_CORRECT);
-        book.setTitle("Title");
-        book.setAuthor("Author");
-        book.setIsbn("isbn");
-        book.setPrice(BigDecimal.TEN);
-        book.setCategories(Set.of(category));
-
-        return book;
-    }
-
-    private CartItem createCartItem() {
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setId(ID_1L_CORRECT);
-        shoppingCart.setUser(createUser());
-
-        CartItem cartItem = new CartItem();
-        cartItem.setId(ID_1L_CORRECT);
-        cartItem.setShoppingCart(shoppingCart);
-        cartItem.setBook(createBook());
-        cartItem.setQuantity(QUANTITY);
-
-        shoppingCart.setCartItems(Collections.singleton(cartItem));
-
-        return cartItem;
-    }
-
-    private ShoppingCart createShoppingCart() {
-        ShoppingCart shoppingCart = new ShoppingCart();
-        shoppingCart.setId(ID_1L_CORRECT);
-        shoppingCart.setUser(createUser());
-
-        Set<CartItem> cartItemSet = new HashSet<>();
-
-        CartItem cartItem = new CartItem();
-        cartItem.setId(ID_1L_CORRECT);
-        cartItem.setShoppingCart(shoppingCart);
-        cartItem.setBook(createBook());
-        cartItem.setQuantity(QUANTITY);
-
-        cartItemSet.add(cartItem);
-        shoppingCart.setCartItems(cartItemSet);
-
-        return shoppingCart;
-    }
-
-    private CartItemResponseDto createCartItemResponseDto() {
-        CartItemResponseDto itemDto = new CartItemResponseDto();
-        itemDto.setId(ID_1L_CORRECT);
-        itemDto.setBookId(ID_1L_CORRECT);
-        itemDto.setBookTitle("Title");
-        itemDto.setQuantity(QUANTITY);
-
-        return itemDto;
-    }
-
-    private ShoppingCartResponseDto createShoppingCartResponseDto() {
-        ShoppingCartResponseDto cartDto = new ShoppingCartResponseDto();
-        cartDto.setId(ID_1L_CORRECT);
-        cartDto.setUserId(ID_1L_CORRECT);
-        cartDto.setCartItems(Set.of(createCartItemResponseDto()));
-        return cartDto;
-    }
-
-    private CartItemResponseDto toCartItemResponseDto(CartItem cartItem) {
-        CartItemResponseDto dto = new CartItemResponseDto();
-        dto.setId(cartItem.getId());
-        dto.setBookId(cartItem.getBook().getId());
-        dto.setQuantity(cartItem.getQuantity());
-        return dto;
     }
 }

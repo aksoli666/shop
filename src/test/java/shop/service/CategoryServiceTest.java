@@ -3,6 +3,8 @@ package shop.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
+import static shop.util.TestUtil.createCategory;
+import static shop.util.TestUtil.createCategoryDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -136,26 +138,11 @@ public class CategoryServiceTest {
 
     @Test
     @DisplayName("""
-            Verify update(...), throw EntityNotFounDException
+            Verify update(...), throw EntityNotFoundException
             """)
     public void update_InvalidId_throwEntityNotFoundException() {
         when(categoryRepository.findById(INCORRECT_ID)).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class,
                 () -> categoryService.update(INCORRECT_ID, new UpdateCategoryRequestDto()));
-    }
-
-    private Category createCategory() {
-        Category category = new Category();
-        category.setId(ID_1L_CORRECT);
-        category.setName(CATEGORY_NAME_CORRECT);
-        category.setDescription(CATEGORY_DESCRIPTION_CORRECT);
-        return category;
-    }
-
-    private CategoryDto createCategoryDto() {
-        return new CategoryDto(
-                ID_1L_CORRECT,
-                CATEGORY_NAME_CORRECT,
-                CATEGORY_DESCRIPTION_CORRECT);
     }
 }
