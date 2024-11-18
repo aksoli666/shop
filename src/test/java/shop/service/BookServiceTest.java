@@ -3,6 +3,10 @@ package shop.service;
 import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static shop.util.TestUtil.createBookDto;
+import static shop.util.TestUtil.createBookId;
+import static shop.util.TestUtil.createCategory;
+import static shop.util.TestUtil.createUpdateBookRequestDto;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -26,7 +30,6 @@ import shop.dto.request.book.UpdateBookRequestDto;
 import shop.dto.responce.book.BookDto;
 import shop.dto.responce.book.BookDtoWithoutCategories;
 import shop.entity.Book;
-import shop.entity.Category;
 import shop.exception.EntityNotFoundException;
 import shop.mapper.BookMapper;
 import shop.repository.BookRepository;
@@ -40,7 +43,6 @@ public class BookServiceTest {
     private static final int PAGE_SIZE = 20;
     private static final Long ID_1L_CORRECT = 1L;
     private static final Long INCORRECT_ID = -100L;
-    private static final String CATEGORY_NAME_CORRECT = "Test Category";
     private static final String BOOK_TITLE_CORRECT = "Test Book";
     private static final String BOOK_AUTHOR_CORRECT = "Test Author";
     private static final String BOOK_ISBN_CORRECT = "Test Isbn";
@@ -209,44 +211,5 @@ public class BookServiceTest {
         Page<BookDtoWithoutCategories> actual = bookService.getBooksByCategoryId(ID_1L_CORRECT, pageable);
 
         assertEquals(expected, actual);
-    }
-
-    private Category createCategory() {
-        Category category = new Category();
-        category.setName(CATEGORY_NAME_CORRECT);
-        return category;
-    }
-
-    private Book createBookId() {
-        Category category = createCategory();
-
-        Book book = new Book();
-        book.setTitle(BOOK_TITLE_CORRECT);
-        book.setAuthor(BOOK_AUTHOR_CORRECT);
-        book.setIsbn(BOOK_ISBN_CORRECT);
-        book.setPrice(BOOK_PRICE_CORRECT);
-        book.setCategories(new HashSet<>(Set.of(category)));
-        return book;
-    }
-
-    private BookDto createBookDto() {
-        BookDto dto = new BookDto();
-        dto.setId(ID_1L_CORRECT);
-        dto.setTitle(BOOK_TITLE_CORRECT);
-        dto.setAuthor(BOOK_AUTHOR_CORRECT);
-        dto.setIsbn(BOOK_ISBN_CORRECT);
-        dto.setPrice(BOOK_PRICE_CORRECT);
-        dto.setCategoryIds(new HashSet<>(Set.of(ID_1L_CORRECT)));
-        return dto;
-    }
-
-    private UpdateBookRequestDto createUpdateBookRequestDto() {
-        UpdateBookRequestDto dto = new UpdateBookRequestDto();
-        dto.setTitle(BOOK_TITLE_CORRECT);
-        dto.setAuthor(BOOK_AUTHOR_CORRECT);
-        dto.setIsbn(BOOK_ISBN_CORRECT);
-        dto.setPrice(BOOK_PRICE_CORRECT);
-        dto.setCategoryIds(new HashSet<>(Set.of(ID_1L_CORRECT)));
-        return dto;
     }
 }

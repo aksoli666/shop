@@ -48,8 +48,6 @@ import shop.dto.responce.book.BookDtoWithoutCategories;
 public class BookControllerTest {
     private static final String ADD_BOOK_SQL =
             "classpath:database/shop/book/add-book.sql";
-    private static final String DELETE_BOOK_BY_TITLE_SQL =
-            "classpath:database/shop/book/delete-books.sql";
     private static final String ADD_BOOK_FOR_CREATE_SQL =
             "classpath:database/shop/book/add-book-for-create.sql";
     private static final String UPDATE_BOOK_SQL =
