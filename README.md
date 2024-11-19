@@ -153,16 +153,6 @@ Each part of the system is controlled by its own dedicated controller, responsib
 
 ---
 
-# Demonstration 🎥
-
-
-While most are familiar with the general idea of an online bookstore, this project showcases its functionality through **Postman**.
-
-
-[**CLICK HERE**](https://www.postman.com/supply-astronomer-36769183/online-book-shop-my-first-time-with-postman/collection/b4gug71/shop?action=share&source=copy-link&creator=34116334&active-environment=ca6ba14d-9b5e-41da-a363-ba4c6f4f982e) to explore the world of possibilities where every book finds its reader! 📚✨
-
----
-
 # How to Run the Application Locally 🖥️🐳
 
 Follow these steps to set up and run the application on your local machine. The application is containerized using **Docker**, making it easy to deploy and manage.
@@ -202,6 +192,16 @@ Before you begin, ensure you have the following installed:
 
 ### With these steps, your application should be up and running locally in no time!
 ---
+
+---
+
+# Demonstration 🎥
+
+
+While most are familiar with the general idea of an online bookstore, this project showcases its functionality through **Postman**.
+
+
+[**CLICK HERE**](https://olexsandradorofeieiva.wistia.com/medias/6fco5qik1i) to explore the world of possibilities where every book finds its reader! 📚✨
 
 ## Final Notes ✨
 
