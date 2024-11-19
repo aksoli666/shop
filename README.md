@@ -25,6 +25,63 @@ The application is built around several key entities, which are the core buildin
 
 ---
 
+## UML ER Diagram for Bookstore Application 📚🌟
+
+```plaintext
++---------------------+          +---------------------+         +---------------------+
+|       User          |          |       Role          |         |       Book          |
++---------------------+          +---------------------+         +---------------------+
+| - id: bigint        |          | - id: bigint        |         | - id: bigint        |
+| - name: String      |          | - name: String      |         | - title: String     |
+| - email: String     |          |                     |         | - author: String    |
+| - password: String  |          |                     |         | - price: Decimal    |
++---------------------+          +---------------------+         | - category_id: UUID |
+         |                                    |                  |                     |
+         +----------------------+             +----------------> |                     |
+                              (1:n) Role                         +---------------------+
+                               Assignment
++----------------------+         
+|    ShoppingCart      |
++----------------------+         
+| - id: bigint         |          
+| - user_id: bigint    |          
++----------------------+          
+         |                                    
+         +------------+ (1:n)
+                      |
+         +---------------------+           +---------------------+ 
+         |  ShoppingCartItem   |           |      Category       |
+         +---------------------+           +---------------------+ 
+         | - id: bigint        |           | - id: bigint        |
+         | - cart_id: bigint   |           | - name: String      |
+         | - book_id: bigint   |           +---------------------+
+         | - quantity: int     |                             
+         +---------------------+         
+                      |                             
+                      +-----------------+ (1:n)      
+                                       |
+                         +---------------------+       
+                         |      Order          |       
+                         +---------------------+       
+                         | - id: bigint        |       
+                         | - user_id: bigint   |       
+                         | - total_price: Dec. |       
+                         | - created_at: Date  |       
+                         +---------------------+       
+                                       |                             
+                                       +----------------+ (1:n)     
+                                                    |
+                                    +---------------------+       
+                                    |     OrderItem       |       
+                                    +---------------------+       
+                                    | - id: bigint        |       
+                                    | - order_id: bigint  |       
+                                    | - book_id: bigint   |       
+                                    | - quantity: int     |       
+                                    +---------------------+
+```   
+---
+
 ## Roles 🧑‍💼
 
 ### **Buyer (User) 🛒📚✨**
@@ -61,10 +118,26 @@ The application is built around several key entities, which are the core buildin
 
 This project uses **cutting-edge technologies** to ensure **high performance** and a **smooth user experience**:
 
+### **Core Application Framework**
 - **Spring Boot 🌱**: To create a stable and scalable application.
 - **Spring Security 🔒**: To provide robust **data and user protection**.
 - **Spring Data JPA 🗂️**: To facilitate **seamless database interaction**.
+
+### **Database Management**
+- **SQL Database 🛢️:** Ensures reliable and efficient data storage and retrieval.
+- **Liquibase 🔄: ** Manages database version control and streamlines migrations.
+
+### **Data Transformation and Communication**
+- **MapStruct 🚀:** Simplifies and accelerates object mapping tasks.
+- **JWT (JSON Web Tokens) 🔐:** Implements secure authentication and session management.
+
+### **Development and Documentation**
 - **Swagger 📚**: For **comprehensive API documentation**.
+- **GlobalExceptionHandler ⚠️:** Handles application-wide exceptions gracefully for robust error management.
+
+### **Deployment and Scalability**
+- **Docker 🐳:** Enables containerized deployment for consistency and portability.
+- **AWS ☁️:** Offers cloud scalability, reliability, and high availability.
 
 ---
 
@@ -88,6 +161,46 @@ While most are familiar with the general idea of an online bookstore, this proje
 
 [**CLICK HERE**](https://www.postman.com/supply-astronomer-36769183/online-book-shop-my-first-time-with-postman/collection/b4gug71/shop?action=share&source=copy-link&creator=34116334&active-environment=ca6ba14d-9b5e-41da-a363-ba4c6f4f982e) to explore the world of possibilities where every book finds its reader! 📚✨
 
+---
+
+# How to Run the Application Locally 🖥️🐳
+
+Follow these steps to set up and run the application on your local machine. The application is containerized using **Docker**, making it easy to deploy and manage.
+
+### Prerequisites 🛠️
+
+Before you begin, ensure you have the following installed:
+
+1. **Docker**: Install Docker Desktop from [Docker's official website](https://www.docker.com/products/docker-desktop).
+2. **Java (JDK 17 or later)**: Download from [Oracle](https://www.oracle.com/java/technologies/javase-downloads.html) or [OpenJDK](https://openjdk.org/).
+3. **Git**: Install Git from [Git's official website](https://git-scm.com/).
+4. **Postman (optional)**: For testing the API, download [Postman](https://www.postman.com/downloads/).
+
+### Steps to Set Up and Run 🏃‍♂️
+
+1. **Clone the Repository**:
+   `git clone https://github.com/your-username/your-repo-name.git && cd your-repo-name`
+
+3. **Build the Application**: Use Maven to build the application:
+   `mvn clean package`
+
+4. **Start Docker Containers**:
+   Make sure Docker is running on your system, then execute the following command to start the application along with its dependencies (e.g., database):
+   `docker-compose up --build`
+
+5. **Stop the Application**: To stop the application and its containers, use:
+   `docker-compose down`
+
+
+### Additional Notes 📝
+- **Database Configuration:** The application uses Liquibase for database version control. Ensure the database container is started properly as defined in the docker-compose.yml file.
+- **Environment Variables:** Modify the .env file (if present) or application.yml to adjust environment-specific configurations (e.g., database credentials, port numbers).
+
+### Testing the API with Postman 🔎
+- Import the [Postman collection](https://www.postman.com/supply-astronomer-36769183/workspace/online-book-shop-my-first-time-with-postman) to test API endpoints.
+- Set `localhost:8088` as the base URL for all requests.
+
+### With these steps, your application should be up and running locally in no time!
 ---
 
 ## Final Notes ✨
